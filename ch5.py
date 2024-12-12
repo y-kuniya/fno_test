@@ -235,8 +235,5 @@ def main():
     fig.savefig("./plotdata/fno_1d_learning.png")
 
 
-
-
-
 if __name__ == '__main__':
     main()
