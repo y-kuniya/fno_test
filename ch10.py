@@ -1,3 +1,12 @@
+##########
+# 12/13
+# 1. 1by1convのところをConv2dを使うようにした。
+# 2. 入力に格子の情報追加した。(ch10.pyも参照)
+# 3. fftをする際に、zero padingをするようにした。
+# 　 (padingの仕方をいくつか試したけれど、ちょっとの差でresolutionが結構変わる)
+# 修正2,3でresolutionできるようになった(?)
+##########
+
 from neuralop.data.datasets import load_darcy_flow_small
 from torch.utils.data import DataLoader,TensorDataset
 import torch 

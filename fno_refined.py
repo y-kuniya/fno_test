@@ -2,6 +2,15 @@ import torch.nn.functional as F
 import torch
 import torch.nn as nn
 
+##########
+# 12/13
+# 1. 1by1convのところをConv2dを使うようにした。
+# 2. 入力に格子の情報追加した。(ch10.pyも参照)
+# 3. fftをする際に、zero padingをするようにした。
+# 　 (padingの仕方をいくつか試したけれど、ちょっとの差でresolutionが結構変わる)
+# 修正2,3でresolutionできるようになった(?)
+##########
+
 class SpectralConv2d(nn.Module):
     def __init__(self,in_channels,out_channels,modes1,modes2):
         super().__init__()
@@ -67,27 +76,19 @@ class FNOBlock2d(nn.Module):
 class Lifting(nn.Module):
     def __init__(self,in_channels):
         super().__init__()
-        # hidden_channels = in_channels//2
         self.w = nn.Conv2d(3,in_channels,1,dtype=torch.double)
-        # self.w2= nn.Conv2d(hidden_channels,in_channels,1,dtype=torch.double)
     def forward(self,x): 
         x = self.w(x)
         x = F.gelu(x)
-        # x = self.w2(x)
-        # x = F.gelu(x)
         return x 
     
 class Projection(nn.Module):
     def __init__(self,out_channels):
         super().__init__()
-        # hidden_channels = out_channels//2
         self.w = nn.Conv2d(out_channels,1,1,dtype=torch.double)
-        # self.w2= nn.Conv2d(hidden_channels,1,1,dtype=torch.double)
     def forward(self,x):
         x = self.w(x)
         x = F.gelu(x)
-        # x = self.w2(x)
-        # x = F.gelu(x)
         return x 
 
 class FNO(nn.Module):
